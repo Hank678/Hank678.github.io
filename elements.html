@@ -47,6 +47,7 @@
 							</div>
 						</header>
 
+
 						<!-- Content -->
 							<div class="wrapper">
 								<div class="inner">
@@ -91,7 +92,7 @@ time.sleep(5)
 
 
 
-# 抓搜尋結果（改用 CSS_SELECTOR 正確選取）
+# 抓搜尋結果
 tours = driver.find_elements(By.CSS_SELECTOR, ".gsc-webResult.gsc-result")
 
 # 抓標題與連結
@@ -116,10 +117,32 @@ df.to_csv(r"C:\Users\user\Desktop\網路爬蟲期末\花蓮.csv", index=False, e
 </code></pre>
 									</section>
 
+
+
+
+
+
+
+
+
+
+									
+
 									<section>
 										<h3 class="major">目前遇到的問題</h3>
 										<p>只能抓取第一頁的內容</p>
+
+
+
+										<section>
+										<h3 class="major">成果說明</h3>
+										<p>自動操作「台灣觀光局官方網站」，模擬使用者搜尋「花蓮」的旅遊資訊。程式會自動開啟網頁、點選「遊程快搜」功能，輸入關鍵字「花蓮」，並擷取搜尋結果中的遊程標題與連結資訊，最終將這些資料整理並儲存為 CSV 檔案。
+
+透過這個程式，可以快速收集與花蓮旅遊相關的資訊，節省人工搜尋與整理的時間，並有助於後續製作推薦清單或旅遊網站內容。</p>
 										
+							<ul class="copyright">
+								<li>s1120523@o365st.pu.edu.tw</li>
+							</ul>
 							<ul class="copyright">
 								<li>s1120523@o365st.pu.edu.tw</li>
 							</ul>

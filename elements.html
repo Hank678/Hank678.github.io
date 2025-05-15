@@ -42,7 +42,7 @@
 					<section id="wrapper">
 						<header>
 							<div class="inner">
-								<h2>j網路爬蟲成果</h2>
+								<h2>網路爬蟲成果</h2>
 								<p>爬取網站:交通部觀光署-觀光資訊網<br>爬取的關鍵字為花蓮</p>
 							</div>
 						</header>
@@ -52,26 +52,73 @@
 								<div class="inner">
 
 									<section>
-										<h3 class="major">Text</h3>
-										<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-										This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-										This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
-										<h4>Blockquote</h4>
-										<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
-										<h4>Preformatted</h4>
-										<pre><code>i = 0;
+										<h3 class="major">程式碼</h3>
+										<pre><code>from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+import time
+import pandas as pd
 
-while (!deck.isInOrder()) {
-  print 'Iteration ' + i;
-  deck.shuffle();
-  i++;
-}
+# 設定 Chrome
+options = webdriver.ChromeOptions()
+options.add_argument("--disable-blink-features=AutomationControlled")
 
-print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+driver.get("https://www.taiwan.net.tw/")
+driver.maximize_window()
+time.sleep(3)
+
+# 點選「遊程快搜」
+tour_button = driver.find_element(By.CSS_SELECTOR, ".menu-link.nav-item.nav-item-tour")
+tour_button.click()
+time.sleep(2)
+
+# 輸入關鍵字
+search_box = driver.find_element(By.CLASS_NAME, "form-input")
+search_box.send_keys("花蓮")
+search_box.send_keys(Keys.ENTER)
+time.sleep(5)
+
+
+
+search_box = driver.find_element(By.ID, "gsc-i-id1")
+search_box.send_keys("花蓮")
+search_box.send_keys(Keys.ENTER)
+time.sleep(5)
+
+
+
+# 抓搜尋結果（改用 CSS_SELECTOR 正確選取）
+tours = driver.find_elements(By.CSS_SELECTOR, ".gsc-webResult.gsc-result")
+
+# 抓標題與連結
+data_list = []
+
+for tour in tours:
+    try:
+        link_element = tour.find_element(By.TAG_NAME, "a")
+        title = link_element.text.strip()
+        link = link_element.get_attribute("href")
+        data_list.append({"標題": title, "連結": link})
+    except Exception as e:
+        print("錯誤：", e)
+
+driver.quit()
+
+# 儲存成 CSV
+df = pd.DataFrame(data_list)
+print(df)
+df.to_csv(r"C:\Users\user\Desktop\網路爬蟲期末\花蓮.csv", index=False, encoding="utf-8-sig")
+
+</code></pre>
 									</section>
 
 									<section>
-										<h3 class="major">Lists</h3>
+										<h3 class="major">目前遇到的問題</h3>
+										<p>只能抓取第一頁的內容</p>
 										<div class="row">
 											<div class="col-6 col-12-medium">
 												<h4>Unordered</h4>
